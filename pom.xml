@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>netty-test</module>
+        <module>rpc-provider</module>
     </modules>
 
     <properties>
