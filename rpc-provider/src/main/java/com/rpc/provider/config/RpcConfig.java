@@ -21,9 +21,9 @@ public class RpcConfig {
     private RpcProperties properties;
 
     @Bean
-    public RpcProvider init(){
-        log.info("servicePort:{},registryAddr:{},registryType:{}",properties.getServicePort(),
-                properties.getRegistryAddr(),properties.getRegistryType());
-        return new RpcProvider(properties.getServicePort());
+    public RpcProvider init() {
+        log.info("servicePort:{},registryAddr:{},registryType:{}", properties.getServicePort(),
+                properties.getRegistryAddr(), properties.getRegistryType());
+        return new RpcProvider(properties.getServicePort(), properties.getRegistryAddr(), properties.getRegistryType());
     }
 }
