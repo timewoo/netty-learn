@@ -1,1 +1,4 @@
-
+rpc:
+  servicePort: 8085
+  registryAddr: 127.0.0.1:2108
+  registryType: ZOOKEEPER

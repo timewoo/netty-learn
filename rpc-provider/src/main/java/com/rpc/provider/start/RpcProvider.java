@@ -7,9 +7,9 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -20,9 +20,12 @@ import java.net.UnknownHostException;
  * @author yanglin
  * @date 2023/1/4 11:02
  */
-@Component
 @Slf4j
+@AllArgsConstructor
 public class RpcProvider implements InitializingBean {
+
+    private int servicePort;
+
     private void start() throws UnknownHostException, InterruptedException {
         // start the netty server
         String serverAddress = InetAddress.getLocalHost().getHostAddress();
@@ -37,12 +40,13 @@ public class RpcProvider implements InitializingBean {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            // todo add encode,decode and other channel handler
                             socketChannel.pipeline();
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = serverBootstrap.bind(serverAddress, 80).sync();
-            log.info("server start, addr:{},port:{}", serverAddress, 80);
+            ChannelFuture future = serverBootstrap.bind(serverAddress, servicePort).sync();
+            log.info("server start, addr:{},port:{}", serverAddress, servicePort);
             future.channel().closeFuture().sync();
         } finally {
             boss.shutdownGracefully();
